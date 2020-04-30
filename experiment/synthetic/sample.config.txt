@@ -1,0 +1,22 @@
+mixture_component = 2
+mixture_weights = [0.3, 0.7]
+sample_size = 2000
+dims = 3
+
+# o1 = sklearn.datasets.make_spd_matrix(3, random_state=5)
+# o2 = sklearn.datasets.make_spd_matrix(3, random_state=9)
+# o3 = sklearn.datasets.make_spd_matrix(3, random_state=10)
+mean = np.array([[-2.5, 1.7], [1.9, -1.5], [-1., 2.2]])
+o1, o2, o3 = 0.5, 1.2, 0.7
+p1, p2, p3 = -0.3, 0.4, 0.7
+C1 = np.array([[o1 ** 2, p1 * o1 * o2, p2 * o1 * o3],
+              [p1 * o1 * o2, o2 ** 2, p3 * o2 * o3],
+              [p2 * o1 * o3, p3 * o2 * o3, o3 ** 2]])
+
+o1_, o2_, o3_ = 0.9, 0.7, 1.
+p1_, p2_, p3_ = 0.5, 0.3, -0.5
+C2 = np.array([[o1_ ** 2, p1_ * o1_ * o2_, p2_ * o1_ * o3_],
+              [p1_ * o1_ * o2_, o2_ ** 2, p3_ * o2_ * o3_],
+              [p2_ * o1_ * o3_, p3_ * o2_ * o3_, o3_ ** 2]])
+
+# entropy = 3.454530625336702 # this was calculated by matlab

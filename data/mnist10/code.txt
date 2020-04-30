@@ -1,0 +1,20 @@
+
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+x_train = tf.squeeze(tf.compat.v2.image.resize(tf.expand_dims(x_train / 255., -1), [10, 10], 'bicubic'))
+x_test = tf.squeeze(tf.compat.v2.image.resize(tf.expand_dims(x_test / 255., -1), [10, 10], 'bicubic'))
+c=10
+tmp = [tf.boolean_mask(x_train, y_train == i) for i in range(c)]
+tmp_test = [tf.boolean_mask(x_test, y_test == i) for i in range(c)]
+tmpt = [tf.concat([tmp_test[i], tmp[i]], 0) for i in range(c)]
+data = tf.stack([tf.concat([tmpt[i], tmpt[i][2*tmpt[i].shape[0]-7877:tmpt[i].shape[0], :, :]], 0) for i in range(c)], -1)
+data = tf.reshape(tf.transpose(data, [3, 0, 1, 2]), [-1, 10*10]).numpy()
+
+def savetxt_sparse_compact(fname, x, fmt="%.9g", delimiter=','):
+    with open(fname, 'w') as fh:
+        csv=""
+        for row in x:
+            line = delimiter.join("0" if value == 0 else fmt % value for value in row)
+            csv += line + '\n'
+        fh.write(csv)
+
+savetxt_sparse_compact("mnist.data", x=data, fmt="%.9g", delimiter=",")
